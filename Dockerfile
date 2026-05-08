@@ -12,8 +12,9 @@ RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    git \
     bash \
+    gh \
+    git \
     procps \
   && rm -rf /var/lib/apt/lists/*
 
