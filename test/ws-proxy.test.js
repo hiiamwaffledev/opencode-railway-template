@@ -43,7 +43,7 @@ const run = async () => {
   const key = crypto.randomBytes(16).toString("base64")
   const handshake = [
     "GET /pty/test/connect HTTP/1.1",
-    "Host: opencode.tradao.xyz",
+    "Host: opencode.example.com",
     "Upgrade: websocket",
     "Connection: Upgrade",
     `Sec-WebSocket-Key: ${key}`,
@@ -74,7 +74,7 @@ const run = async () => {
   assert.match(response, /Upgrade: websocket/i)
   assert.match(response, /Connection: Upgrade/i)
   assert.match(response, new RegExp(`Sec-WebSocket-Accept: ${escapeRegex(createAccept(key))}`, "i"))
-  assert.equal(upstreamHost, "opencode.tradao.xyz")
+  assert.equal(upstreamHost, "opencode.example.com")
 
   await close(proxy)
   await close(upstream)

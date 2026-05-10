@@ -22,7 +22,9 @@ const PLUGIN_PORT = process.env.OPENCLAW_PLUGIN_PORT || "9090";
 const WORKSPACE = process.env.OPENCODE_WORKSPACE || "/data/workspace";
 const PASSWORD = process.env.OPENCODE_SERVER_PASSWORD;
 const USERNAME = process.env.OPENCODE_SERVER_USERNAME || "opencode";
-const AUTH_REALM = process.env.AUTH_REALM || "opencode.tradao.xyz";
+const AUTH_REALM = String(process.env.AUTH_REALM || process.env.RAILWAY_PUBLIC_DOMAIN || "opencode")
+  .replace(/[\r\n"]/g, "")
+  .trim() || "opencode";
 const SESSION_SECRET = process.env.OPENCODE_SESSION_SECRET || PASSWORD;
 const SESSION_COOKIE = "opencode_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;

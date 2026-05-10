@@ -52,7 +52,7 @@
 | `OPENCODE_REF` | `v1.14.25` | `SOURCE_MODE=true` 时要构建的 OpenCode git ref。 |
 | `OPENCODE_MODEL` | - | OpenCode 默认模型。 |
 | `OPENCODE_SESSION_SECRET` | `OPENCODE_SERVER_PASSWORD` | 浏览器 session cookie 的签名密钥。多实例部署时建议显式设置。 |
-| `AUTH_REALM` | `opencode.tradao.xyz` | Basic Auth realm，通常无需修改。 |
+| `AUTH_REALM` | `RAILWAY_PUBLIC_DOMAIN` 或 `opencode` | Basic Auth realm，通常无需修改。 |
 | `ENABLE_OH_MY_OPENCODE` | `true` | 是否自动注入 `oh-my-openagent@latest`。 |
 | `OMO_CONFIG_PROFILE` | - | 可选的 oh-my 配置 profile。`default` 加载 `oh-my-opencode.default.json`；`team-a` 加载 `oh-my-opencode.team-a.json`；不设置或设为 `none`、`false`、`off` 时不覆盖现有配置。 |
 | `ENABLE_OPENCLAW_PLUGIN` | `false` | 为 `true` 时，向 `/data/.config/opencode/opencode.json` 注入 `@laceletho/plugin-openclaw`。 |

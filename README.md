@@ -52,7 +52,7 @@ Deploy OpenCode on Railway with the pieces that matter in production: pinned fro
 | `OPENCODE_REF` | `v1.14.25` | OpenCode git ref to build when `SOURCE_MODE=true`. |
 | `OPENCODE_MODEL` | - | Default model for OpenCode. |
 | `OPENCODE_SESSION_SECRET` | `OPENCODE_SERVER_PASSWORD` | Signing secret for browser session cookies. Set this explicitly if you run multiple instances. |
-| `AUTH_REALM` | `opencode.tradao.xyz` | Basic Auth realm. Usually no need to change it. |
+| `AUTH_REALM` | `RAILWAY_PUBLIC_DOMAIN` or `opencode` | Basic Auth realm. Usually no need to change it. |
 | `ENABLE_OH_MY_OPENCODE` | `true` | Enable automatic injection of `oh-my-openagent@latest`. |
 | `OMO_CONFIG_PROFILE` | - | Optional oh-my config profile. `default` loads `oh-my-opencode.default.json`; `team-a` loads `oh-my-opencode.team-a.json`; unset, `none`, `false`, or `off` leaves existing config untouched. |
 | `ENABLE_OPENCLAW_PLUGIN` | `false` | When `true`, inject `@laceletho/plugin-openclaw` into `/data/.config/opencode/opencode.json`. |
