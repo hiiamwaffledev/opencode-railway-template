@@ -58,7 +58,7 @@
 | `ENABLE_OPENCLAW_PLUGIN` | `false` | 为 `true` 时，向 `/data/.config/opencode/opencode.json` 注入 `@laceletho/plugin-openclaw`。 |
 | `ENABLE_MONITOR` | `false` | 是否启用内存监控和自动重启。 |
 | `LOG_LEVEL` | `WARN` | Wrapper 日志级别。 |
-| `LOG_SLEEP_BLOCKERS` | `true` | 记录哪些入站和出站请求让 Serverless 服务保持唤醒，方便排查。 |
+| `LOG_SLEEP_BLOCKERS` | `false` | 记录哪些入站和出站请求让 Serverless 服务保持唤醒，方便排查。 |
 
 ## 监控相关环境变量
 

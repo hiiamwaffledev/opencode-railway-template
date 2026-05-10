@@ -58,7 +58,7 @@ Deploy OpenCode on Railway with the pieces that matter in production: pinned fro
 | `ENABLE_OPENCLAW_PLUGIN` | `false` | When `true`, inject `@laceletho/plugin-openclaw` into `/data/.config/opencode/opencode.json`. |
 | `ENABLE_MONITOR` | `false` | Enable the memory monitor and auto-restart logic. |
 | `LOG_LEVEL` | `WARN` | Wrapper log level. |
-| `LOG_SLEEP_BLOCKERS` | `true` | Log inbound and outbound requests that can keep a Serverless service awake. |
+| `LOG_SLEEP_BLOCKERS` | `false` | Log inbound and outbound requests that can keep a Serverless service awake. |
 
 ## Monitor Environment Variables
 

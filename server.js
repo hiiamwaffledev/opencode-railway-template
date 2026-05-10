@@ -36,7 +36,7 @@ const enableOhMyOpencode = process.env.ENABLE_OH_MY_OPENCODE !== "false";
 const enableOpenclawPlugin = process.env.ENABLE_OPENCLAW_PLUGIN === "true";
 const omoConfigProfile = process.env.OMO_CONFIG_PROFILE;
 const ACTIVITY_FILE = process.env.OPENCODE_ACTIVITY_FILE || "/tmp/opencode_monitor_state_v5/last_activity";
-const sleepDebug = process.env.LOG_SLEEP_BLOCKERS !== "false";
+const sleepDebug = process.env.LOG_SLEEP_BLOCKERS === "true";
 
 if (!PASSWORD) {
   console.error("ERROR: OPENCODE_SERVER_PASSWORD is required");
