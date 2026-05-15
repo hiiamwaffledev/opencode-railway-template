@@ -81,7 +81,8 @@
       "model": "opencode-go/qwen3.6-plus"
     },
     "unspecified-high": {
-      "model": "opencode-go/kimi-k2.6"
+      "model": "opencode-go/deepseek-v4-pro",
+      "variant": "max"
     },
     "writing": {
       "model": "opencode-go/deepseek-v4-pro",
