@@ -7,10 +7,10 @@
   },
   "agents": {
     "sisyphus": {
-      "disabled": true
+      "disable": true
     },
     "hephaestus": {
-      "disabled": true
+      "disable": true
     },
     "librarian": {
       "model": "opencode-go/qwen3.6-plus"
