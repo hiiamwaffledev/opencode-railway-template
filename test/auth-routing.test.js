@@ -25,6 +25,8 @@ const run = () => {
   assert.match(server, /sendStatic\(res, staticPath\("\/"\), req\.method\)/);
   assert.match(server, /const forwardHeaders = \{ \.\.\.req\.headers \}/);
   assert.doesNotMatch(server, /delete forwardHeaders\.host/);
+  assert.doesNotMatch(server, /OPENCODE_API_PREFIXES/, "wrapper does not maintain OpenCode API route prefixes");
+  assert.doesNotMatch(server, /isOpencodeApiEndpoint/, "OpenCode owns API route matching");
 
   console.log("auth routing ok");
 };

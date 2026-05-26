@@ -151,13 +151,13 @@ function requestAuth(req) {
   return "none";
 }
 
-function shouldLogSleepInbound(req, pathname, isApiReq, isPluginReq) {
+function shouldLogSleepInbound(req, pathname, isPluginReq) {
   if (pathname === "/global/health") return true;
   if (pathname === "/session/status") return true;
   if (pathname === "/global/event" || pathname === "/events") return true;
   if (pathname === "/register") return true;
   if (pathname === "/" || pathname === "/login") return req.method === "GET" || req.method === "HEAD";
-  return isHtmlNavigation(req, pathname, isApiReq, isPluginReq);
+  return isHtmlNavigation(req, pathname, isPluginReq);
 }
 
 function logSleepInbound(req, pathname, note = "") {
@@ -730,9 +730,9 @@ function isStaticAsset(pathname) {
   return /\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json)$/.test(pathname);
 }
 
-function isHtmlNavigation(req, pathname, isApiReq, isPluginReq) {
-  if (req.method !== "GET") return false;
-  if (isApiReq || isPluginReq) return false;
+function isHtmlNavigation(req, pathname, isPluginReq) {
+  if (req.method !== "GET" && req.method !== "HEAD") return false;
+  if (isPluginReq) return false;
   if (isStaticAsset(pathname)) return false;
   const accept = req.headers.accept || "";
   if (req.headers["sec-fetch-dest"] === "document") return true;
@@ -757,17 +757,6 @@ const PUBLIC_PATHS = new Set([
   "/web-app-manifest-512x512.png",
 ]);
 
-// OpenCode HTTP API endpoint prefixes - these endpoints route to OpenCode service
-const OPENCODE_API_PREFIXES = [
-  '/session',
-  '/global',
-  '/agents',
-  '/tools',
-  '/events',
-  '/v2',
-  '/api'
-];
-
 // Check whether a request targets a plugin endpoint
 function isPluginEndpoint(url) {
   const pathname = pathnameOf(url);
@@ -776,12 +765,6 @@ function isPluginEndpoint(url) {
   // Prefix match
   if (PLUGIN_PREFIXES.some(prefix => pathname.startsWith(prefix))) return true;
   return false;
-}
-
-// Check whether a request targets an OpenCode API endpoint
-function isOpencodeApiEndpoint(url) {
-  const pathname = pathnameOf(url);
-  return OPENCODE_API_PREFIXES.some(prefix => pathname === prefix || pathname.startsWith(prefix + '/'));
 }
 
 function isPublicPath(pathname) {
@@ -795,7 +778,7 @@ function isStaticRoute(pathname) {
   return false;
 }
 
-function shouldTrackActivity(req, pathname, isApiReq, isPluginReq) {
+function shouldTrackActivity(req, pathname, isPluginReq) {
   if (req.method === "OPTIONS") return false;
   if (isPluginReq) return false;
   if (pathname === "/login" || pathname === "/logout") return false;
@@ -803,8 +786,7 @@ function shouldTrackActivity(req, pathname, isApiReq, isPluginReq) {
   if (pathname === "/global/event" || pathname === "/events") return false;
   if (pathname === "/session/status") return false;
   if (isStaticRoute(pathname)) return false;
-  if (isApiReq) return true;
-  return isHtmlNavigation(req, pathname, isApiReq, isPluginReq);
+  return true;
 }
 
 function staticPath(pathname) {
@@ -978,10 +960,9 @@ function proxyRequest(req, res, targetPort) {
 // Create proxy server
 const server = http.createServer(async (req, res) => {
   const pathname = pathnameOf(req.url);
-  const isApiReq = isOpencodeApiEndpoint(req.url);
   const isPluginReq = isPluginEndpoint(req.url);
 
-  if (shouldLogSleepInbound(req, pathname, isApiReq, isPluginReq)) {
+  if (shouldLogSleepInbound(req, pathname, isPluginReq)) {
     logSleepInbound(req, pathname);
   }
 
@@ -1007,14 +988,14 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (isHtmlNavigation(req, pathname, isApiReq, isPluginReq) && !hasValidRouteDirectory(pathname)) {
+  if (isHtmlNavigation(req, pathname, isPluginReq) && !hasValidRouteDirectory(pathname)) {
     console.warn(`[wrapper] Missing route directory for ${pathname}, redirecting to workspace root`);
     redirect(res, rootSessionLocation());
     return;
   }
 
   if (!isAuthenticated(req)) {
-    if (isHtmlNavigation(req, pathname, isApiReq, isPluginReq)) {
+    if (isHtmlNavigation(req, pathname, isPluginReq)) {
       redirect(res, "/login");
       return;
     }
@@ -1022,11 +1003,11 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (shouldTrackActivity(req, pathname, isApiReq, isPluginReq)) {
+  if (shouldTrackActivity(req, pathname, isPluginReq)) {
     touchActivity();
   }
 
-  if (isHtmlNavigation(req, pathname, isApiReq, isPluginReq)) {
+  if (isHtmlNavigation(req, pathname, isPluginReq)) {
     const route = routeSessionParts(pathname);
     const directory = decodeRouteDirectory(pathname);
     if (route && directory && route.tail.length === 1 && route.tail[0] === "session" && fs.existsSync(directory)) {
@@ -1047,13 +1028,6 @@ const server = http.createServer(async (req, res) => {
       return;
     }
     sendMissingStatic(res, "/");
-    return;
-  }
-
-  if (!isApiReq && !isPluginReq) {
-    if (sendStatic(res, staticPath("/"), req.method)) return;
-    res.writeHead(404, { "Content-Type": "text/plain", "Cache-Control": "no-store" });
-    res.end("Not found\n");
     return;
   }
 
