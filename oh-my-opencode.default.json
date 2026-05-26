@@ -1,6 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "model_fallback": true,
+  "sisyphus_agent": {
+    "default_builder_enabled": true,
+    "replace_plan": true
+  },
   "agents": {
     "sisyphus": {
       "model": "opencode-go/deepseek-v4-pro",
